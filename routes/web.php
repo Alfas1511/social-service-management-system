@@ -44,6 +44,6 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('notebooks')->group(function () {
         Route::get('/', [NotebookController::class, 'index'])->name('notebooks.index');
         Route::post('/store', [NotebookController::class, 'store'])->name('notebooks.store');
-        Route::get('/member-total/{member_id}', [NotebookController::class, 'getMemberTotal']);
+        Route::get('/getMemberNotebookTotal', [NotebookController::class, 'getMemberTotal'])->name('getMemberNotebookTotal');
     });
 });

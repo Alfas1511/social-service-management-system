@@ -4,13 +4,20 @@
 
 @section('content')
     <div class="container mt-4">
-        <h2>Notebook Entries</h2>
+        <h2>Notebook Amount Entries</h2>
+
+        @if (Session::has('success'))
+            <p style="color:white; background-color: green; padding: 10px 5px">{{ Session::get('success') }}</p>
+        @endif
+
+        @if (Session::has('error'))
+            <p style="color:white; background-color: red; padding: 10px 5px">{{ Session::get('error') }}</p>
+        @endif
 
         <form action="{{ route('notebooks.store') }}" method="POST">
             @csrf
-
             <!-- Member Select -->
-            <div class="mb-3">
+            <div class="mb-3 col-md-6">
                 <label for="memberSelect" class="form-label">Select Member</label>
                 <select id="memberSelect" name="member_id" class="form-select" onchange="showInputFields(this)">
                     <option value="">-- Select a member --</option>
@@ -42,33 +49,31 @@
 
 @section('script')
 
-<script>
-    $(document).ready(function () {
+    <script>
+        $(document).ready(function() {
 
-        $('#memberSelect').on('change', function () {
-            const memberId = $(this).val();
+            $('#memberSelect').on('change', function() {
+                const memberId = $(this).val();
 
-            if (memberId) {
-                $('#inputFieldsContainer').show();
-
-                // Fetch current total from server
-                $.get(`/notebooks/member-total/${memberId}`, function (data) {
-                    $('#totalAmount').val(data.total);
-                });
-            } else {
-                $('#inputFieldsContainer').hide();
-                $('#totalAmount').val('');
-                $('#addAmount').val('');
-            }
+                if (memberId) {
+                    $('#inputFieldsContainer').show();
+                    $.ajax({
+                        type: "get",
+                        url: "{{ route('getMemberNotebookTotal') }}",
+                        data: {
+                            user_id: memberId,
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.status) {
+                                $('#totalAmount').val(response.total);
+                            } else {
+                                $('#totalAmount').val(0);
+                            }
+                        }
+                    });
+                }
+            });
         });
-
-        $('#addAmount').on('keyup input', function () {
-            const addAmount = parseFloat($(this).val()) || 0;
-            const currentTotal = parseFloat($('#totalAmount').val()) || 0;
-
-            // Show live updated total (but not permanently saved yet)
-            $('#totalAmount').val(currentTotal + addAmount);
-        });
-    });
-</script>
+    </script>
 @endsection
