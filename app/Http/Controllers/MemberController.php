@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MemberStoreRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -10,7 +11,7 @@ class MemberController extends Controller
 {
     public function index()
     {
-        $members = User::where('role', 'MEMBERS')->get();
+        $members = User::where('role', 'MEMBER')->get();
         return view('member.index', compact('members'));
     }
 
@@ -19,20 +20,9 @@ class MemberController extends Controller
         return view('member.create');
     }
 
-    public function store(Request $request)
+    public function store(MemberStoreRequest $request)
     {
         try {
-            $request->validate([
-                'first_name' => 'required',
-                'last_name' => 'nullable',
-                'username' => 'required|unique:users,username',
-                'email' => 'required|unique:users,email',
-                'password' => 'required|min:8',
-                'dob' => 'required',
-                'phone_number' => 'required',
-                'image' => 'nullable',
-            ]);
-
             $data = new User();
             $data->first_name = $request->first_name;
             $data->last_name = $request->last_name;
@@ -41,7 +31,7 @@ class MemberController extends Controller
             $data->password = Hash::make($request->password);
             $data->phone_number = $request->phone_number;
             $data->dob = $request->dob;
-            $data->role = 'MEMBERS';
+            $data->role = 'MEMBER';
 
             if ($request->image) {
                 $image = $request->image;
@@ -52,6 +42,16 @@ class MemberController extends Controller
             return redirect()->route('member.index')->with('success', 'Member Added Successfully');
         } catch (\Throwable $th) {
             info($th);
+            return redirect()->route('member.create')->with('error', 'Failed');
+        }
+    }
+    public function delete(string $id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->save();
+            return redirect()->route('member.index')->with('success', 'Member Deleted Successfully');
+        } else {
             return redirect()->route('member.index')->with('error', 'Failed');
         }
     }

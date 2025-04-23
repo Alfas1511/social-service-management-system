@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NotebookStoreRequest;
 use App\Models\Notebook;
 use App\Models\PaymentEntry;
 use App\Models\User;
@@ -13,7 +14,7 @@ class NotebookController extends Controller
 {
     public function index()
     {
-        $members = User::where('role', 'MEMBERS')->get();
+        $members = User::where('role', 'MEMBER')->get();
         return view('notebooks.index', compact('members'));
     }
 
@@ -32,16 +33,12 @@ class NotebookController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(NotebookStoreRequest $request)
     {
         try {
             DB::beginTransaction();
-            $request->validate([
-                'member_id' => 'required|exists:users,id',
-                'amount' => 'required|numeric|min:0',
-            ]);
-
             $existing_data = Notebook::where('user_id', $request->member_id)->first();
+
             if ($existing_data) {
                 $existing_data->date = Carbon::now()->format('Y-m-d');
                 $existing_data->amount_paid = $request->amount;
@@ -75,9 +72,24 @@ class NotebookController extends Controller
             return redirect()->route('notebooks.index')->with('success', 'Notebook Data Added!');
         } catch (\Throwable $th) {
             info($th);
-            dd($th);
             DB::rollBack();
             return redirect()->route('notebooks.index')->with('error', 'Failed!');
+        }
+    }
+
+    public function getMemberNotebookPayments(Request $request)
+    {
+        $notebook = Notebook::where('user_id', $request->user_id)->first();
+        $datas = PaymentEntry::where('notebook_id', $notebook->id)->where('user_id', $request->user_id)->get();
+        if ($notebook) {
+            return response()->json([
+                'status' => true,
+                'data' => $datas,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+            ]);
         }
     }
 }

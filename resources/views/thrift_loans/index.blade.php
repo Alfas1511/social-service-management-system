@@ -1,10 +1,10 @@
 @extends('layouts.mainapp')
 
-@section('title', 'Notebooks')
+@section('title', 'Thrift Loans')
 
 @section('content')
     <div class="container mt-4">
-        <h2>Notebook Amount Entries</h2>
+        <h2>Thrift Loans Entries</h2>
 
         @if (Session::has('success'))
             <p style="color:white; background-color: green; padding: 10px 5px">{{ Session::get('success') }}</p>
@@ -14,7 +14,7 @@
             <p style="color:white; background-color: red; padding: 10px 5px">{{ Session::get('error') }}</p>
         @endif
 
-        <form action="{{ route('notebooks.store') }}" method="POST">
+        <form action="{{ route('thrift-loans.store') }}" method="POST">
             @csrf
             <!-- Member Select -->
             <div class="mb-3 col-md-6">
@@ -84,7 +84,7 @@
                     // Get total amount
                     $.ajax({
                         type: "GET",
-                        url: "{{ route('getMemberNotebookTotal') }}",
+                        url: "{{ route('getMemberThriftLoanTotal') }}",
                         data: {
                             user_id: memberId
                         },
@@ -103,7 +103,7 @@
 
                     $.ajax({
                         type: "GET",
-                        url: "{{ route('getMemberNotebookPayments') }}",
+                        url: "{{ route('getMemberThriftLoanPayments') }}",
                         data: {
                             user_id: memberId
                         },

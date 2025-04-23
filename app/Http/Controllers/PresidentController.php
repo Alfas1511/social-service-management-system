@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PresidentStoreRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,20 +20,9 @@ class PresidentController extends Controller
         return view('president.create');
     }
 
-    public function store(Request $request)
+    public function store(PresidentStoreRequest $request)
     {
         try {
-            $request->validate([
-                'first_name' => 'required',
-                'last_name' => 'nullable',
-                'username' => 'required|unique:users,username',
-                'email' => 'required|unique:users,email',
-                'password' => 'required|min:8',
-                'dob' => 'required',
-                'phone_number' => 'required',
-                'image' => 'nullable',
-            ]);
-
             $data = new User();
             $data->first_name = $request->first_name;
             $data->last_name = $request->last_name;
@@ -52,7 +42,18 @@ class PresidentController extends Controller
             return redirect()->route('president.index')->with('success', 'President Added Successfully');
         } catch (\Throwable $th) {
             info($th);
-            return redirect()->route('president.index')->with('error', 'Failed');
+            return redirect()->route('president.create')->with('error', 'Failed');
+        }
+    }
+
+    public function delete(string $id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->save();
+            return redirect()->route('member.index')->with('success', 'President Deleted Successfully');
+        } else {
+            return redirect()->route('member.index')->with('error', 'Failed');
         }
     }
 }

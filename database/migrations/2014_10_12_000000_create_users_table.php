@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('is_superuser')->default(false);
             $table->timestamp('last_login')->nullable();
-            $table->enum('role', ['ADS', 'PRESIDENT', 'MEMBERS']);
+            $table->enum('role', ['ADS', 'PRESIDENT', 'MEMBER']);
             $table->boolean('is_verified')->default(false);
             $table->string('phone_number');
             $table->date('dob');

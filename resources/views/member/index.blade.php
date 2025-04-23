@@ -1,6 +1,6 @@
 @extends('layouts.mainapp')
 
-@section('title', 'Member')
+@section('title', 'Members')
 
 @section('content')
     <div class="container mt-4">
@@ -14,6 +14,10 @@
         <!-- Flash Message -->
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-success">{{ session('error') }}</div>
         @endif
 
         <!-- Table -->
@@ -39,10 +43,8 @@
                             <td>{{ Carbon\Carbon::parse($member->dob)->format('d-m-Y') }}</td>
                             <td>
                                 {{-- <a href="{{ route('presidents.show', $president->id) }}" class="btn btn-sm btn-info">View</a> --}}
-                                <a href="{{ route('member.edit', $member->id) }}"
-                                    class="btn btn-sm btn-warning">Edit</a>
-                                <form action="{{ route('member.delete', $member->id) }}" method="POST"
-                                    class="d-inline"
+                                {{-- <a href="{{ route('member.edit', $member->id) }}" class="btn btn-sm btn-warning">Edit</a> --}}
+                                <form action="{{ route('member.delete', $member->id) }}" method="POST" class="d-inline"
                                     onsubmit="return confirm('Are you sure you want to delete this member?');">
                                     @csrf
                                     @method('DELETE')
@@ -52,7 +54,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center">No members   found.</td>
+                            <td colspan="6" class="text-center">No members found.</td>
                         </tr>
                     @endforelse
                 </tbody>

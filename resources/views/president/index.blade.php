@@ -16,6 +16,10 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
         <!-- Table -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -39,8 +43,8 @@
                             <td>{{ Carbon\Carbon::parse($president->dob)->format('d-m-Y') }}</td>
                             <td>
                                 {{-- <a href="{{ route('presidents.show', $president->id) }}" class="btn btn-sm btn-info">View</a> --}}
-                                <a href="{{ route('president.edit', $president->id) }}"
-                                    class="btn btn-sm btn-warning">Edit</a>
+                                {{-- <a href="{{ route('president.edit', $president->id) }}"
+                                    class="btn btn-sm btn-warning">Edit</a> --}}
                                 <form action="{{ route('president.delete', $president->id) }}" method="POST"
                                     class="d-inline"
                                     onsubmit="return confirm('Are you sure you want to delete this president?');">
