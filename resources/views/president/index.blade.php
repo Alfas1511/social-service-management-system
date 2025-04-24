@@ -30,6 +30,7 @@
                         <th>Email</th>
                         <th>Phone Number</th>
                         <th>DOB</th>
+                        <th>Photo</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -41,6 +42,9 @@
                             <td>{{ $president->email }}</td>
                             <td>{{ $president->phone_number }}</td>
                             <td>{{ Carbon\Carbon::parse($president->dob)->format('d-m-Y') }}</td>
+                            <td><img src='{{ $president->image ? asset('storage/' . $president->image) : asset('assets/dummy_user_image.jpg') }}'
+                                    style="width:80px" />
+                            </td>
                             <td>
                                 {{-- <a href="{{ route('presidents.show', $president->id) }}" class="btn btn-sm btn-info">View</a> --}}
                                 {{-- <a href="{{ route('president.edit', $president->id) }}"
