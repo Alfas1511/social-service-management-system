@@ -102,12 +102,32 @@
                 <a href="{{ route('member.index') }}">Members</a>
             @endif
 
-            @if (in_array(auth()->user()->role, ['PRESIDENT', 'MEMBERS']))
+            @if (auth()->user()->role === 'PRESIDENT')
                 <a href="{{ route('notebooks.index') }}">Notebooks</a>
             @endif
 
-            @if (in_array(auth()->user()->role, ['PRESIDENT', 'MEMBERS']))
+            @if (auth()->user()->role === 'PRESIDENT')
+                <a href="{{ route('loans.index') }}">Loans</a>
+            @endif
+
+            @if (auth()->user()->role === 'PRESIDENT')
                 <a href="{{ route('thrift-loans.index') }}">Thrift Loans</a>
+            @endif
+
+            @if (in_array(auth()->user()->role, ['PRESIDENT', 'MEMBER']))
+                <a href="{{ route('attendance.index') }}">Attendances</a>
+            @endif
+
+            @if (in_array(auth()->user()->role, ['MEMBER']))
+                <a href="{{ route('fines.index') }}">Fines</a>
+            @endif
+
+            @if (in_array(auth()->user()->role, ['PRESIDENT', 'ADS']))
+                <a href="{{ route('notifications.index') }}">Notifications</a>
+            @endif
+
+            @if (in_array(auth()->user()->role, ['PRESIDENT', 'ADS']))
+                <a href="{{ route('coupons.index') }}">Coupons</a>
             @endif
 
             <a href="#settingsSubmenu" data-bs-toggle="collapse" aria-expanded="false"

@@ -13,11 +13,9 @@ class RoleCheck
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $roles): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        $allowedRoles = explode(',', $roles);
-
-        if (!in_array(auth()->user()->role, $allowedRoles)) {
+        if (!in_array(auth()->user()->role, $roles)) {
             abort(404);
         }
         return $next($request);
