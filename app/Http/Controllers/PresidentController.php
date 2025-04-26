@@ -50,10 +50,10 @@ class PresidentController extends Controller
     {
         $user = User::find($id);
         if ($user) {
-            $user->save();
-            return redirect()->route('member.index')->with('success', 'President Deleted Successfully');
+            $user->delete();
+            return redirect()->route('president.index')->with('success', 'President Deleted Successfully');
         } else {
-            return redirect()->route('member.index')->with('error', 'Failed');
+            return redirect()->route('president.index')->with('error', 'Failed');
         }
     }
 }

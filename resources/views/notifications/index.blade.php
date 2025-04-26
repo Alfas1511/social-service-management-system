@@ -36,6 +36,7 @@
                                         <th scope="col">Title</th>
                                         <th scope="col">Description</th>
                                         <th scope="col">Date</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,10 +46,23 @@
                                             <td>{{ $notification->title }}</td>
                                             <td>{{ $notification->description }}</td>
                                             <td>{{ \Carbon\Carbon::parse($notification->date)->format('d M Y') }}</td>
+                                            <td>
+                                                @if (Auth::user()->role == 'ADS')
+                                                    <form action="{{ route('notifications.delete', $notification->id) }}"
+                                                        method="POST" class="d-inline"
+                                                        onsubmit="return confirm('Are you sure you want to delete this Notification?');">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                    </form>
+                                                @else
+                                                    --
+                                                @endif
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center text-muted">No notifications found.</td>
+                                            <td colspan="5" class="text-center text-muted">No notifications found.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

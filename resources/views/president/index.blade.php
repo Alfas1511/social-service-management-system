@@ -59,14 +59,14 @@
                                                     method="POST" class="d-inline"
                                                     onsubmit="return confirm('Are you sure you want to delete this president?');">
                                                     @csrf
-                                                    @method('DELETE')
+                                                    @method('POST')
                                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center">No presidents found.</td>
+                                            <td colspan="7" class="text-center">No presidents found.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

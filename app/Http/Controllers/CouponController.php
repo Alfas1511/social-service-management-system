@@ -43,7 +43,7 @@ class CouponController extends Controller
     {
         $data = Coupon::find($id);
         if ($data) {
-            $data->save();
+            $data->delete();
             return redirect()->route('coupons.index')->with('success', 'Coupon Deleted Successfully');
         } else {
             return redirect()->route('coupons.index')->with('error', 'Failed');

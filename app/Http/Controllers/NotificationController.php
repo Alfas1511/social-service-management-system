@@ -39,7 +39,7 @@ class NotificationController extends Controller
     {
         $data = Notification::find($id);
         if ($data) {
-            $data->save();
+            $data->delete();
             return redirect()->route('notifications.index')->with('success', 'Notification Deleted Successfully');
         } else {
             return redirect()->route('notifications.index')->with('error', 'Failed');

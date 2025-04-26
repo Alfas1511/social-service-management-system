@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->references('id');
+            $table->integer('user_id');
             $table->integer('days_not_attended');
             $table->integer('fine_amount_paid');
             $table->timestamps();

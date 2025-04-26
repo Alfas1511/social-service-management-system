@@ -3,46 +3,68 @@
 @section('title', 'Fines')
 
 @section('content')
-    <div class="container mt-4">
-        <h2>My Fines</h2>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
 
-        @if (Session::has('success'))
-            <p style="color:white; background-color: green; padding: 10px 5px">{{ Session::get('success') }}</p>
-        @endif
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">My Fines</h4>
+                    </div>
 
-        @if (Session::has('error'))
-            <p style="color:white; background-color: red; padding: 10px 5px">{{ Session::get('error') }}</p>
-        @endif
+                    <div class="card-body">
+                        @if (Session::has('success'))
+                            <div class="alert alert-success">
+                                {{ Session::get('success') }}
+                            </div>
+                        @endif
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle" id="notification-table">
-                <thead class="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Date</th>
-                        <th>Fine Amount</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($fines as $fine)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ \Carbon\Carbon::parse($fine->date)->format('d-m-Y') }}</td>
-                            <td>{{ $fine->amount }}</td>
-                            <td>
-                                @if ($fine->status == 'paid')
-                                    <span class="badge bg-success">Paid</span>
-                                @else
-                                    <a class="btn btn-sm btn-primary pay-fine-btn" data-id="{{ $fine->id }}">Pay</a>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                        @if (Session::has('error'))
+                            <div class="alert alert-danger">
+                                {{ Session::get('error') }}
+                            </div>
+                        @endif
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle" id="notification-table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        <th>Fine Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($fines as $fine)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($fine->date)->format('d-m-Y') }}</td>
+                                            <td>{{ $fine->amount }}</td>
+                                            <td>
+                                                @if ($fine->status == 'paid')
+                                                    <span class="badge bg-success">Paid</span>
+                                                @else
+                                                    <a class="btn btn-sm btn-primary pay-fine-btn"
+                                                        data-id="{{ $fine->id }}">Pay</a>
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                    @empty
+
+                                        <tr>
+                                            <td colspan="4" class="text-center">No data</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- card-body -->
+                </div> <!-- card -->
+
+            </div>
         </div>
-
     </div>
 @endsection
 

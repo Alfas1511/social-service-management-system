@@ -37,19 +37,37 @@
                                             <th>Coupon</th>
                                             <th>Description</th>
                                             <th>Date</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 <tbody>
-                                    @foreach ($coupons as $coupon)
+                                    @forelse ($coupons as $coupon)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td><img
-                                                    src="{{ $coupon->image ? asset('/storage/' . $coupon->image) : '--' }}" style="width:45px"/>
+                                            <td><img src="{{ $coupon->image ? asset('/storage/' . $coupon->image) : '--' }}"
+                                                    style="width:45px" />
                                             </td>
                                             <td>{{ $coupon->description ?? '--' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($coupon->date)->format('d-m-Y') }}</td>
+                                            <td>
+                                                @if (Auth::user()->role == 'ADS')
+                                                    <form action="{{ route('coupons.delete', $coupon->id) }}" method="POST"
+                                                        class="d-inline"
+                                                        onsubmit="return confirm('Are you sure you want to delete this Coupon?');">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                    </form>
+                                                @else
+                                                    --
+                                                @endif
+                                            </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">No Coupons found !!</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

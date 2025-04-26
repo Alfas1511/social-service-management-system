@@ -91,11 +91,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [NotificationController::class, 'index'])->middleware(['role:PRESIDENT,ADS'])->name('notifications.index');
         Route::get('/create', [NotificationController::class, 'create'])->middleware(['role:ADS'])->name('notifications.create');
         Route::post('/store', [NotificationController::class, 'store'])->middleware(['role:ADS'])->name('notifications.store');
+        Route::post('/delete/{id}', [NotificationController::class, 'delete'])->middleware(['role:ADS'])->name('notifications.delete');
     });
 
     Route::prefix('coupons')->group(function () {
         Route::get('/', [CouponController::class, 'index'])->middleware(['role:PRESIDENT,ADS'])->name('coupons.index');
         Route::get('/create', [CouponController::class, 'create'])->middleware(['role:ADS'])->name('coupons.create');
         Route::post('/store', [CouponController::class, 'store'])->middleware(['role:ADS'])->name('coupons.store');
+        Route::post('/delete/{id}', [CouponController::class, 'delete'])->middleware(['role:ADS'])->name('coupons.delete');
+
     });
 });

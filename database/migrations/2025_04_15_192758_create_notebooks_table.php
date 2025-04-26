@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('notebooks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->references('id');
+            $table->integer('user_id');
             $table->date('date');
             $table->integer('amount_paid');
             $table->integer('total_amount');

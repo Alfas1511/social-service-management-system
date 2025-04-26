@@ -60,14 +60,14 @@
                                                     class="d-inline"
                                                     onsubmit="return confirm('Are you sure you want to delete this member?');">
                                                     @csrf
-                                                    @method('DELETE')
+                                                    @method('POST')
                                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center">No members found.</td>
+                                            <td colspan="7" class="text-center">No members found.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

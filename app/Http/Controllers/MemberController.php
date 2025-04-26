@@ -49,7 +49,7 @@ class MemberController extends Controller
     {
         $user = User::find($id);
         if ($user) {
-            $user->save();
+            $user->delete();
             return redirect()->route('member.index')->with('success', 'Member Deleted Successfully');
         } else {
             return redirect()->route('member.index')->with('error', 'Failed');
